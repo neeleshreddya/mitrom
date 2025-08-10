@@ -1,5 +1,5 @@
 name: Auto-generate jobs index
- 
+
 permissions:
   contents: write
 
@@ -34,7 +34,11 @@ jobs:
       - name: Generate jobs/index.json and jobs/index.html
         run: |
           python - <<'PY'
-          import os, glob, json, subprocess, datetime
+          import os
+          import glob
+          import json
+          import subprocess
+          import datetime
           from bs4 import BeautifulSoup
 
           def git_date(path):
@@ -42,13 +46,18 @@ jobs:
                   out = subprocess.check_output(['git','log','-1','--format=%cs','--',path])
                   return out.decode().strip()
               except Exception:
-                  return ""
+                  try:
+                      mtime = os.path.getmtime(path)
+                      return datetime.datetime.utcfromtimestamp(mtime).strftime('%Y-%m-%d')
+                  except Exception:
+                      return ""
 
           os.makedirs('jobs', exist_ok=True)
           files = sorted(glob.glob('jobs/*.html'))
           jobs = []
+
           for f in files:
-              if os.path.basename(f).lower() in ('index.html','jobs.json'):
+              if os.path.basename(f).lower() in ('index.html','index.json'):
                   continue
               try:
                   with open(f, encoding='utf-8', errors='ignore') as fh:
@@ -71,14 +80,8 @@ jobs:
 
               # Date from git commit or file mtime
               date = git_date(f)
-              if not date:
-                  try:
-                      mtime = os.path.getmtime(f)
-                      date = datetime.datetime.utcfromtimestamp(mtime).strftime('%Y-%m-%d')
-                  except Exception:
-                      date = ""
 
-              # FIX: Always link directly to the HTML job page
+              # Link directly to the HTML job page
               link = f"/jobs/{os.path.basename(f)}"
 
               jobs.append({
@@ -91,11 +94,11 @@ jobs:
           # Sort newest-first by date (empty dates go last)
           jobs.sort(key=lambda x: x.get('date') or '', reverse=True)
 
-          # Write JSON
+          # Write JSON file
           with open('jobs/index.json', 'w', encoding='utf-8') as out:
               json.dump(jobs, out, ensure_ascii=False, indent=2)
 
-          # Build HTML index
+          # Build HTML index page
           html_head = """<!DOCTYPE html>
           <html lang="en">
           <head>
