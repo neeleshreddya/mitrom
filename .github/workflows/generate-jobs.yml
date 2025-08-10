@@ -154,3 +154,4 @@ jobs:
           git add jobs/index.json jobs/index.html || true
           git commit -m "chore: auto-generate jobs index" || echo "No changes to commit"
           git push origin HEAD:${{ github.ref_name }}
+          
