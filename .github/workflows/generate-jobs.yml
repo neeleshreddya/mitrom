@@ -1,132 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+name: Generate Jobs Index
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Jobs - Hey Mitroms</title>
-  <meta name="description" content="Latest job updates from Hey Mitroms">
-  <meta name="keywords" content="jobs, careers, freshers, recruitment">
+on:
+  push:
+    paths:
+      - "jobs/*.html"
+      - ".github/workflows/generate-jobs.yml"
 
-  <!-- Favicons -->
-  <link href="../assets/img/hey.png" rel="icon">
-  <link href="../assets/img/hey.png" rel="apple-touch-icon">
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700&display=swap" rel="stylesheet">
+      - name: Generate jobs.json
+        run: |
+          echo "[" > jobs/jobs.json
+          for file in jobs/*.html; do
+            # skip index.html so it doesn't list itself
+            if [ "$(basename "$file")" = "index.html" ]; then continue; fi
+            title=$(grep -oP '(?<=<title>).*?(?=</title>)' "$file" | head -n 1)
+            desc=$(grep -oP '(?<=<meta name="description" content=").*?(?=">)' "$file" | head -n 1)
+            fname=$(basename "$file")
+            echo "  {\"title\": \"$title\", \"description\": \"$desc\", \"link\": \"/jobs/$fname\", \"date\": \"$(date +%Y-%m-%d)\"}," >> jobs/jobs.json
+          done
+          sed -i '$ s/,$//' jobs/jobs.json
+          echo "]" >> jobs/jobs.json
 
-  <!-- Vendor CSS Files -->
-  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="../assets/css/main.css" rel="stylesheet">
-</head>
-
-<body class="index-page">
-
-  <!-- Header -->
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container d-flex justify-content-between align-items-center">
-      <a href="https://heymitroms.fun/" class="logo">
-        <h1 class="sitename">Hey Mitroms</h1>
-      </a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="https://heymitroms.fun/">Home</a></li>
-          <li><a href="/jobs/" class="active">Jobs</a></li>
-          <li><a href="/contact.html">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="main mt-5">
-    <div class="container py-5">
-      <h1 class="mb-4">🚀 Latest Job Updates</h1>
-      <div id="jobs-list" class="row gy-4"></div>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer id="footer" class="footer dark-background">
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-4 col-md-6 footer-about">
-          <a href="https://heymitroms.fun/" class="logo d-flex align-items-center">
-            <span class="sitename">Hey Mitroms</span>
-          </a>
-          <div class="social-links d-flex mt-4">
-            <a href="https://www.facebook.com/heymitroms" target="_blank"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/hey_mitroms/" target="_blank"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.youtube.com/@Heymitroms" target="_blank"><i class="bi bi-youtube"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><a href="https://heymitroms.fun/">Home</a></li>
-            <li><a href="/about.html">About us</a></li>
-            <li><a href="/disclaimer/">Disclaimer</a></li>
-            <li><a href="/TermsandContidions/">Terms and Conditions</a></li>
-            <li><a href="/privacypolicy/">Privacy Policy</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="container copyright text-center mt-4">
-      <p>© <strong class="px-1 sitename">Hey Mitroms</strong> All Rights Reserved</p>
-    </div>
-  </footer>
-
-  <!-- Scroll Top & Preloader -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
-    <i class="bi bi-arrow-up-short"></i>
-  </a>
-  <div id="preloader"></div>
-
-  <!-- Vendor JS -->
-  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/vendor/php-email-form/validate.js"></script>
-  <script src="../assets/vendor/aos/aos.js"></script>
-  <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="../assets/js/main.js"></script>
-
-  <!-- Jobs Loader Script (loads jobs/jobs.json from same folder) -->
-  <script>
-    fetch('./jobs.json')
-      .then(res => res.json())
-      .then(data => {
-        if (!Array.isArray(data) || data.length === 0) {
-          document.getElementById('jobs-list').innerHTML = '<div class="col-12"><p>No jobs available yet.</p></div>';
-          return;
-        }
-        let html = '';
-        data.forEach(job => {
-          html += `
-            <div class="col-md-6">
-              <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                  <h4 class="card-title"><a href="${job.link}" target="_blank" rel="noopener">${job.title}</a></h4>
-                  <small class="text-muted">${job.date || ''}</small>
-                  <p class="mt-2">${job.description || ''}</p>
-                  <a href="${job.link}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Read More</a>
-                </div>
-              </div>
-            </div>
-          `;
-        });
-        document.getElementById('jobs-list').innerHTML = html;
-      })
-      .catch(() => {
-        document.getElementById('jobs-list').innerHTML = '<div class="col-12"><p>No jobs available yet.</p></div>';
-      });
-  </script>
-
-</body>
-</html>
+      - name: Commit and push jobs.json
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add jobs/jobs.json
+          git commit -m "Update jobs.json" || echo "No changes to commit"
+          git push
