@@ -46,6 +46,13 @@
       border-radius: 8px;
       box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
     }
+
+    /* Active nav link styling */
+    .navmenu ul li a.active {
+      color: black !important;
+      font-weight: 700;
+      border-bottom: 2px solid black;
+    }
   </style>
 </head>
 
@@ -58,10 +65,10 @@
       </a>
       <nav id="navmenu" class="navmenu d-none d-xl-block">
         <ul class="d-flex list-unstyled gap-4 mb-0">
-          <li><a href="/" class="active">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="/about/">About</a></li>
           <li><a href="/contact/">Contact</a></li>
-          <li><a href="/jobs/">Jobs</a></li>
+          <li><a href="/jobs/" class="active">Jobs</a></li>
         </ul>
       </nav>
       <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
