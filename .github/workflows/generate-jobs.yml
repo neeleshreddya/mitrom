@@ -78,7 +78,8 @@ jobs:
                   except Exception:
                       date = ""
 
-              link = os.path.basename(f)   # relative link (works from /jobs/)
+              # FIX: Always link directly to the HTML job page
+              link = f"/jobs/{os.path.basename(f)}"
 
               jobs.append({
                   "title": title,
@@ -94,7 +95,7 @@ jobs:
           with open('jobs/index.json', 'w', encoding='utf-8') as out:
               json.dump(jobs, out, ensure_ascii=False, indent=2)
 
-          # Build HTML index using your theme paths (index placed in jobs/)
+          # Build HTML index
           html_head = """<!DOCTYPE html>
           <html lang="en">
           <head>
@@ -154,4 +155,3 @@ jobs:
           git add jobs/index.json jobs/index.html || true
           git commit -m "chore: auto-generate jobs index" || echo "No changes to commit"
           git push origin HEAD:${{ github.ref_name }}
-          
