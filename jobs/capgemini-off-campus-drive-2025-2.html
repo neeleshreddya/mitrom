@@ -9,8 +9,8 @@
   <meta name="keywords" content="Capgemini, Off Campus Drive, 2025 Jobs, Freshers Jobs, Software Engineer" />
 
   <!-- Favicons -->
-  <link href="/assets/img/hey.png" rel="icon" />
-  <link href="/assets/img/hey.png" rel="apple-touch-icon" />
+  <link href="/assets/img/favicon.png" rel="icon" />
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
   <!-- Fonts and CSS -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
@@ -52,6 +52,30 @@
       color: black !important;
       font-weight: 700;
       border-bottom: 2px solid black;
+    }
+
+    /* Scroll to top button styles */
+    .scroll-top {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 40px;
+      height: 40px;
+      background: #007bff;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 9999;
+      transition: background 0.3s;
+      opacity: 0.7;
+    }
+
+    .scroll-top:hover {
+      background: #0056b3;
+      opacity: 1;
     }
   </style>
 </head>
@@ -179,6 +203,11 @@
     </div>
   </main>
 
+  <!-- Scroll to Top Button -->
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center" aria-label="Scroll to top">
+    <i class="bi bi-arrow-up-short" style="font-size: 1.5rem;"></i>
+  </a>
+
   <!-- Footer -->
   <footer id="footer" class="footer bg-light py-4 mt-5">
     <div class="container">
@@ -211,10 +240,6 @@
   <script src="/assets/vendor/aos/aos.js"></script>
   <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="/assets/js/main.js"></script>
-  <a href="#" class="scroll-top d-flex align-items-center justify-content-center">
-  <i class="bi bi-arrow-up-short"></i>
-</a>
-
 </body>
 
 </html>
