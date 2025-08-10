@@ -1,5 +1,6 @@
 name: Generate Jobs Index
 
+
 on:
   push:
     paths:
