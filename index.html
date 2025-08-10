@@ -26,13 +26,80 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: Hey mitroms
-  * Template URL: https://Hey Mitroms.com/Hey mitroms-bootstrap-blog-template/
-  * Updated: Aug 08 2024 with Bootstrap v5.3.3
-  * Author: Hey Mitroms.com
-  * License: https://Hey Mitroms.com/license/
-  ======================================================== -->
+  <style>
+    /* Additional CSS for dynamic posts */
+    .swiper-slide {
+      position: relative;
+      background: #eee;
+      border-radius: 8px;
+      overflow: hidden;
+      height: 300px;
+      color: white;
+    }
+
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+    }
+
+    .slide-content {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      right: 15px;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+    }
+
+    .slide-content h3 {
+      margin: 0 0 5px;
+    }
+
+    .posts-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .post-item {
+      background: #f9f9f9;
+      border-radius: 8px;
+      overflow: hidden;
+      width: calc(33% - 10px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-item img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .post-item h4 {
+      margin: 10px;
+      font-size: 1rem;
+    }
+
+    #trending-jobs-list {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 30px;
+    }
+
+    #trending-jobs-list li {
+      padding: 6px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    #trending-jobs-list li a {
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
 </head>
 
 <body class="index-page">
@@ -48,34 +115,32 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-  <li><a href="https://heymitroms.fun/" class="active">Home</a></li>
-  <li><a href="jobs/">JOBS</a></li>
-  <li><a href="contact.html">Contact</a></li>
-</ul>
-
+          <li><a href="https://heymitroms.fun/" class="active">Home</a></li>
+          <li><a href="jobs/">JOBS</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
 
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
       <div class="header-social-links">
-  <a href="https://www.facebook.com/heymitroms" class="facebook" target="_blank" rel="noopener">
-    <i class="bi bi-facebook"></i>
-  </a>
-  <a href="https://www.instagram.com/hey_mitroms/" class="instagram" target="_blank" rel="noopener">
-    <i class="bi bi-instagram"></i>
-  </a>
-  <a href="https://www.youtube.com/@Heymitroms" class="youtube" target="_blank" rel="noopener">
-    <i class="bi bi-youtube"></i>
-  </a>
-</div>
-
+        <a href="https://www.facebook.com/heymitroms" class="facebook" target="_blank" rel="noopener">
+          <i class="bi bi-facebook"></i>
+        </a>
+        <a href="https://www.instagram.com/hey_mitroms/" class="instagram" target="_blank" rel="noopener">
+          <i class="bi bi-instagram"></i>
+        </a>
+        <a href="https://www.youtube.com/@Heymitroms" class="youtube" target="_blank" rel="noopener">
+          <i class="bi bi-youtube"></i>
+        </a>
+      </div>
 
     </div>
   </header>
 
   <main class="main">
 
-    <!-- Slider Section -->
+    <!-- Original Slider Section (You may keep or remove this to avoid duplication) -->
     <section id="slider" class="slider section dark-background">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -144,9 +209,37 @@
 
     </section><!-- /Slider Section -->
 
-    <!-- Trending Category Section -->
-    <section id="trending-category" class="trending-category section">
+    <!-- Dynamic Job Posts Slider -->
+    <section id="job-slider-section" class="section">
+      <h2>Latest Job Posts</h2>
+      <div class="swiper-container">
+        <div class="swiper-wrapper" id="job-slider-wrapper">
+          <!-- Slides dynamically inserted here -->
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </section>
 
+    <!-- Random Job Posts Section -->
+    <section id="random-jobs-section" class="section">
+      <h2>Random Job Posts</h2>
+      <div id="random-jobs-list" class="posts-grid">
+        <!-- Random posts dynamically inserted here -->
+      </div>
+    </section>
+
+    <!-- Trending Job Posts Section -->
+    <section id="trending-jobs-section" class="section">
+      <h2>Trending Job Posts</h2>
+      <ul id="trending-jobs-list">
+        <!-- Trending posts dynamically inserted here -->
+      </ul>
+    </section>
+
+    <!-- Existing Trending Category Section -->
+    <section id="trending-category" class="trending-category section">
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="container" data-aos="fade-up">
@@ -261,14 +354,9 @@
 
     </section><!-- /Trending Category Section -->
 
-    <!-- Culture Category Section -->
-    
-
-   
-
   </main>
 
- <footer id="footer" class="footer dark-background">
+  <footer id="footer" class="footer dark-background">
 
     <div class="container footer-top">
       <div class="row gy-4">
@@ -276,18 +364,18 @@
           <a href="heymitroms.fun" class="logo d-flex align-items-center">
             <span class="sitename">Hey Mitroms</span>
           </a>
-          
+
           <div class="social-links d-flex mt-4">
-  <a href="https://www.facebook.com/heymitroms" target="_blank" rel="noopener">
-    <i class="bi bi-facebook"></i>
-  </a>
-  <a href="https://www.instagram.com/hey_mitroms/" target="_blank" rel="noopener">
-    <i class="bi bi-instagram"></i>
-  </a>
-  <a href="https://www.youtube.com/@Heymitroms" target="_blank" rel="noopener">
-    <i class="bi bi-youtube"></i>
-  </a>
-</div>
+            <a href="https://www.facebook.com/heymitroms" target="_blank" rel="noopener">
+              <i class="bi bi-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/hey_mitroms/" target="_blank" rel="noopener">
+              <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://www.youtube.com/@Heymitroms" target="_blank" rel="noopener">
+              <i class="bi bi-youtube"></i>
+            </a>
+          </div>
 
         </div>
 
@@ -295,33 +383,28 @@
           <h4>Useful Links</h4>
           <ul>
             <li><a href="https://heymitroms.fun/">Home</a></li>
-           <li><a href="about.html">About us</a></li>
+            <li><a href="about.html">About us</a></li>
             <li><a href="disclaimer/">Disclaimer</a></li>
             <li><a href="TermsandContidions/">Terms and contitions</a></li>
             <li><a href="privacypolicy/">Privacy policy</a></li>
           </ul>
         </div>
-
-        
-
       </div>
     </div>
 
     <div class="container copyright text-center mt-4">
       <p>© <span>Copyright</span> <strong class="px-1 sitename">Hey Mitroms</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://Hey Mitroms.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
         Designed by <a href="https://Hey Mitroms.com/">Hey Mitroms</a>
       </div>
     </div>
 
   </footer>
 
+
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -334,6 +417,65 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Dynamic Job Posts JavaScript -->
+  <script>
+    fetch('/jobs/index.json')
+      .then(response => response.json())
+      .then(posts => {
+        // Recent posts for slider: sort by date desc and take 5
+        const recentPosts = posts.slice().sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0,5);
+        // Shuffle and pick 6 for random posts list
+        const shuffledPosts = posts.slice().sort(() => Math.random() - 0.5).slice(0,6);
+        // Pick first 5 posts for trending (or customize your own)
+        const trendingPosts = posts.slice(0, 5);
+
+        // Populate slider
+        const sliderWrapper = document.getElementById('job-slider-wrapper');
+        recentPosts.forEach(post => {
+          const slide = document.createElement('div');
+          slide.className = 'swiper-slide';
+          slide.style.backgroundImage = `url(${post.image || 'https://via.placeholder.com/600x300'})`;
+          slide.innerHTML = `
+            <div class="content">
+              <h3><a href="${post.link}">${post.title}</a></h3>
+              <p>${post.description}</p>
+            </div>
+          `;
+          sliderWrapper.appendChild(slide);
+        });
+
+        // Populate random posts grid
+        const randomList = document.getElementById('random-jobs-list');
+        shuffledPosts.forEach(post => {
+          const postItem = document.createElement('div');
+          postItem.className = 'post-item col-md-4';
+          postItem.innerHTML = `
+            <a href="${post.link}"><img src="${post.image || 'https://via.placeholder.com/400x200'}" alt="${post.title}"></a>
+            <h4><a href="${post.link}">${post.title}</a></h4>
+          `;
+          randomList.appendChild(postItem);
+        });
+
+        // Populate trending posts list
+        const trendingList = document.getElementById('trending-jobs-list');
+        trendingPosts.forEach(post => {
+          const li = document.createElement('li');
+          li.innerHTML = `<a href="${post.link}">${post.title}</a>`;
+          trendingList.appendChild(li);
+        });
+
+        // Initialize Swiper slider
+        new Swiper('.swiper-container', {
+          loop: true,
+          speed: 600,
+          autoplay: { delay: 3500 },
+          pagination: { el: '.swiper-pagination', clickable: true },
+          navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }
+        });
+      })
+      .catch(error => console.error('Error loading jobs index:', error));
+  </script>
 
 </body>
 
