@@ -1,90 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jobs - Hey Mitroms</title>
-
-  <!-- Bootstrap CSS -->
   <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="/assets/css/main.css" rel="stylesheet">
-
-  <style>
-    .job-card {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-      background: #fff;
-      transition: 0.3s;
-    }
-    .job-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-  </style>
 </head>
-
 <body>
-
-  <!-- Header -->
-  <header class="header d-flex align-items-center sticky-top">
-    <div class="container d-flex align-items-center justify-content-between">
-      <a href="/" class="logo"><h1 class="sitename">Hey Mitroms</h1></a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/jobs/" class="active">Jobs</a></li>
-          <li><a href="/about/">About</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container py-5">
-    <h1 class="mb-4">Latest Job Posts</h1>
+  <div class="container py-5">
+    <h1 class="mb-4">Latest Jobs</h1>
     <div id="jobs-list"></div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer bg-light text-center py-3">
-    <p>© 2025 Hey Mitroms. All Rights Reserved.</p>
-  </footer>
-
-  <!-- JS Files -->
-  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  </div>
 
   <script>
-    const jobs = [
-      {
-        title: "Walmart Off Campus Drive 2025",
-        link: "/jobs/walmart-drive-2025.html",
-        date: "August 10, 2025",
-        description: "Walmart is hiring freshers for various roles in 2025."
-      },
-      {
-        title: "TCS Digital Hiring 2025",
-        link: "/jobs/tcs-digital-2025.html",
-        date: "August 12, 2025",
-        description: "TCS Digital Hiring for 2025 graduates with attractive packages."
-      }
-      // Add more posts here when you create them
-    ];
-
-    const jobsList = document.getElementById("jobs-list");
-    jobs.forEach(job => {
-      jobsList.innerHTML += `
-        <div class="job-card">
-          <h4><a href="${job.link}">${job.title}</a></h4>
-          <small class="text-muted">${job.date}</small>
-          <p>${job.description}</p>
-          <a href="${job.link}" class="btn btn-primary btn-sm">Read More</a>
-        </div>
-      `;
-    });
+    fetch('/jobs/jobs.json')
+      .then(res => res.json())
+      .then(data => {
+        let html = '';
+        data.forEach(job => {
+          html += `
+            <div class="card mb-3">
+              <div class="card-body">
+                <h4><a href="${job.link}">${job.title}</a></h4>
+                <small>${job.date}</small>
+                <p>${job.description}</p>
+                <a href="${job.link}" class="btn btn-primary btn-sm">Read More</a>
+              </div>
+            </div>
+          `;
+        });
+        document.getElementById('jobs-list').innerHTML = html;
+      })
+      .catch(err => {
+        document.getElementById('jobs-list').innerHTML = `<p>No jobs available yet.</p>`;
+      });
   </script>
-
 </body>
 </html>
