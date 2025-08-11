@@ -117,37 +117,27 @@
 <body class="index-page">
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
-
       <a href="https://heymitroms.fun/" class="logo d-flex align-items-center me-auto me-xl-0">
         <h1 class="sitename">Hey Mitroms</h1>
       </a>
-
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="https://heymitroms.fun/" class="active">Home</a></li>
           <li><a href="jobs/">JOBS</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
-
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
-
       <div class="header-social-links">
-        <a href="https://www.facebook.com/heymitroms" class="facebook" target="_blank" rel="noopener">
-          <i class="bi bi-facebook"></i>
-        </a>
-        <a href="https://www.instagram.com/hey_mitroms/" class="instagram" target="_blank" rel="noopener">
-          <i class="bi bi-instagram"></i>
-        </a>
-        <a href="https://www.youtube.com/@Heymitroms" class="youtube" target="_blank" rel="noopener">
-          <i class="bi bi-youtube"></i>
-        </a>
+        <a href="https://www.facebook.com/heymitroms" class="facebook" target="_blank" rel="noopener"><i class="bi bi-facebook"></i></a>
+        <a href="https://www.instagram.com/hey_mitroms/" class="instagram" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
+        <a href="https://www.youtube.com/@Heymitroms" class="youtube" target="_blank" rel="noopener"><i class="bi bi-youtube"></i></a>
       </div>
     </div>
   </header>
 
   <main class="main">
-    <!-- Dynamic Job Posts Slider -->
+    <!-- Latest Job Posts Slider -->
     <section id="job-slider-section" class="section">
       <h2>Latest Job Posts</h2>
       <div class="swiper-container">
@@ -158,13 +148,13 @@
       </div>
     </section>
 
-    <!-- Random Job Posts Section -->
+    <!-- Random Job Posts -->
     <section id="random-jobs-section" class="section">
       <h2>Random Job Posts</h2>
       <div id="random-jobs-list" class="posts-grid"></div>
     </section>
 
-    <!-- Trending Job Posts Section -->
+    <!-- Trending Job Posts -->
     <section id="trending-jobs-section" class="section">
       <h2>Trending Job Posts</h2>
       <ul id="trending-jobs-list"></ul>
@@ -178,20 +168,12 @@
           <a href="heymitroms.fun" class="logo d-flex align-items-center">
             <span class="sitename">Hey Mitroms</span>
           </a>
-
           <div class="social-links d-flex mt-4">
-            <a href="https://www.facebook.com/heymitroms" target="_blank" rel="noopener">
-              <i class="bi bi-facebook"></i>
-            </a>
-            <a href="https://www.instagram.com/hey_mitroms/" target="_blank" rel="noopener">
-              <i class="bi bi-instagram"></i>
-            </a>
-            <a href="https://www.youtube.com/@Heymitroms" target="_blank" rel="noopener">
-              <i class="bi bi-youtube"></i>
-            </a>
+            <a href="https://www.facebook.com/heymitroms" target="_blank" rel="noopener"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.instagram.com/hey_mitroms/" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.youtube.com/@Heymitroms" target="_blank" rel="noopener"><i class="bi bi-youtube"></i></a>
           </div>
         </div>
-
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Useful Links</h4>
           <ul>
@@ -204,11 +186,11 @@
         </div>
       </div>
     </div>
-
     <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Hey Mitroms</strong> <span>All Rights Reserved</span></p>
-      <div class="credits">
-        Designed by <a href="https://Hey Mitroms.com/">Hey Mitroms</a>
+      <p>© <span>Copyright</span>
+        <strong class="px-1 sitename">Hey Mitroms</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">Designed by
+        <a href="https://Hey Mitroms.com/">Hey Mitroms</a>
       </div>
     </div>
   </footer>
@@ -234,13 +216,8 @@
     fetch('/jobs/index.json')
       .then(response => response.json())
       .then(posts => {
-        // Sort by date descending for recent slider posts
         const recentPosts = posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
-
-        // Shuffle and pick 6 for random posts list
         const shuffledPosts = posts.slice().sort(() => Math.random() - 0.5).slice(0, 6);
-
-        // Pick first 5 posts for trending (or customize logic)
         const trendingPosts = posts.slice(0, 5);
 
         const sliderWrapper = document.getElementById('job-slider-wrapper');
@@ -287,6 +264,7 @@
       })
       .catch(error => console.error('Error loading jobs index:', error));
   </script>
+
 </body>
 
 </html>
