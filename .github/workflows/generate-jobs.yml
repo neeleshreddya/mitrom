@@ -34,11 +34,7 @@ jobs:
       - name: Generate jobs/index.json and jobs/index.html
         run: |
           python - <<'PY'
-          import os
-          import glob
-          import json
-          import subprocess
-          import datetime
+          import os, glob, json, subprocess, datetime
           from bs4 import BeautifulSoup
 
           def git_date(path):
@@ -81,6 +77,16 @@ jobs:
               # Date from git commit or file mtime
               date = git_date(f)
 
+              # Try to get feature image
+              image = ""
+              img_meta = soup.find("meta", property="og:image")
+              if img_meta and img_meta.get("content"):
+                  image = img_meta.get("content")
+              else:
+                  img_tag = soup.find("img")
+                  if img_tag and img_tag.get("src"):
+                      image = img_tag["src"]
+
               # Link directly to the HTML job page
               link = f"/jobs/{os.path.basename(f)}"
 
@@ -88,7 +94,8 @@ jobs:
                   "title": title,
                   "description": desc,
                   "date": date,
-                  "link": link
+                  "link": link,
+                  "image": image
               })
 
           # Sort newest-first by date (empty dates go last)
@@ -132,9 +139,11 @@ jobs:
               for job in jobs:
                   t = job["title"].replace('"','&quot;')
                   d = job["description"].replace('"','&quot;')
+                  img_html = f'<img src="{job["image"]}" alt="{t}" style="width:100%;height:200px;object-fit:cover;">' if job["image"] else ""
                   cards += f'''
                     <div class="col-md-6">
                       <div class="card h-100 shadow-sm">
+                        {img_html}
                         <div class="card-body">
                           <h4 class="card-title"><a href="{job["link"]}">{t}</a></h4>
                           <small class="text-muted">{job["date"]}</small>
