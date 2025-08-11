@@ -1,169 +1,130 @@
-name: Auto-generate jobs index 
+name: Auto-generate jobs index with robust parsing
 
 permissions:
   contents: write
 
 on:
   push:
-    branches: [ main, master ]
+    branches:
+      - main
+      - master
     paths:
       - "jobs/**"
       - ".github/workflows/generate-jobs.yml"
-  workflow_dispatch: {}
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout (full history)
+      - name: Checkout repo
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Setup Python
+      - name: Setup Python environment
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: 3.x
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install beautifulsoup4
+      - name: Install BeautifulSoup
+        run: python -m pip install --upgrade pip beautifulsoup4
 
-      - name: Generate jobs/index.json and jobs/index.html
+      - name: Generate jobs/index.json
         run: |
-          python - <<'PY'
-          import os, glob, json, subprocess, datetime
+          python - <<'PYTHON'
+          import os
+          import glob
+          import json
+          import subprocess
+          import datetime
           from bs4 import BeautifulSoup
 
           def git_date(path):
               try:
-                  out = subprocess.check_output(['git','log','-1','--format=%cs','--',path])
-                  return out.decode().strip()
-              except Exception:
+                  out = subprocess.check_output(['git', 'log', '-1', '--format=%cs', '--', path])
+                  return out.decode('utf-8').strip()
+              except Exception as e:
+                  print(f"Git date error for {path}: {e}")
                   try:
                       mtime = os.path.getmtime(path)
                       return datetime.datetime.utcfromtimestamp(mtime).strftime('%Y-%m-%d')
-                  except Exception:
-                      return ""
+                  except Exception as ex:
+                      print(f"File mtime error for {path}: {ex}")
+                      return ''
 
-          os.makedirs('jobs', exist_ok=True)
-          files = sorted(glob.glob('jobs/*.html'))
           jobs = []
+          job_files = sorted(glob.glob('jobs/*.html'))
 
-          for f in files:
-              if os.path.basename(f).lower() in ('index.html','index.json'):
+          for filepath in job_files:
+              filename = os.path.basename(filepath)
+              if filename.lower() in ('index.html', 'index.json'):
                   continue
               try:
-                  with open(f, encoding='utf-8', errors='ignore') as fh:
-                      soup = BeautifulSoup(fh, 'html.parser')
-              except Exception:
+                  with open(filepath, encoding='utf-8', errors='ignore') as f:
+                      soup = BeautifulSoup(f, 'html.parser')
+              except Exception as parse_error:
+                  print(f"Skipping {filename} due to parse error: {parse_error}")
                   continue
 
-              # Title: prefer H1, then H2, then <title>, else filename
-              title_tag = soup.find(['h1','h2'])
-              if title_tag and title_tag.get_text(strip=True):
-                  title = title_tag.get_text(strip=True)
+              # Extract title with fallback
+              title = ''
+              h1 = soup.find('h1')
+              h2 = soup.find('h2')
+              if h1 and h1.get_text(strip=True):
+                  title = h1.get_text(strip=True)
+              elif h2 and h2.get_text(strip=True):
+                  title = h2.get_text(strip=True)
               elif soup.title and soup.title.string:
                   title = soup.title.string.strip()
               else:
-                  title = os.path.splitext(os.path.basename(f))[0].replace('-', ' ').replace('_',' ').title()
+                  title = os.path.splitext(filename)[0].replace('-', ' ').replace('_', ' ').title()
 
-              # Short description: first <p>
-              p = soup.find('p')
-              desc = p.get_text(" ", strip=True) if p else ""
+              # Extract description
+              first_p = soup.find('p')
+              description = first_p.get_text(" ", strip=True) if first_p else ''
 
-              # Date from git commit or file mtime
-              date = git_date(f)
+              # Extract date (from git or file)
+              date = git_date(filepath)
 
-              # Try to get feature image
-              image = ""
-              img_meta = soup.find("meta", property="og:image")
-              if img_meta and img_meta.get("content"):
-                  image = img_meta.get("content")
+              # Extract image from meta or first img
+              image_url = ''
+              meta_img = soup.find('meta', property='og:image')
+              if meta_img and meta_img.get('content'):
+                  image_url = meta_img['content']
               else:
-                  img_tag = soup.find("img")
-                  if img_tag and img_tag.get("src"):
-                      image = img_tag["src"]
+                  img_tag = soup.find('img')
+                  if img_tag and img_tag.get('src'):
+                      image_url = img_tag['src']
 
-              # Link directly to the HTML job page
-              link = f"/jobs/{os.path.basename(f)}"
+              link = f'/jobs/{filename}'
 
-              jobs.append({
+              job = {
                   "title": title,
-                  "description": desc,
+                  "description": description,
                   "date": date,
                   "link": link,
-                  "image": image
-              })
+                  "image": image_url
+              }
 
-          # Sort newest-first by date (empty dates go last)
+              jobs.append(job)
+              print(f"Processed job: {title}")
+
+          # Sort jobs by date descending, placing undated at the end
           jobs.sort(key=lambda x: x.get('date') or '', reverse=True)
 
-          # Write JSON file
-          with open('jobs/index.json', 'w', encoding='utf-8') as out:
-              json.dump(jobs, out, ensure_ascii=False, indent=2)
+          with open('jobs/index.json', 'w', encoding='utf-8') as out_file:
+              json.dump(jobs, out_file, ensure_ascii=False, indent=2)
 
-          # Build HTML index page
-          html_head = """<!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Jobs - Hey Mitroms</title>
-            <meta name="description" content="Latest job updates from Hey Mitroms">
-            <link href="../assets/img/hey.png" rel="icon">
-            <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-            <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-            <link href="../assets/css/main.css" rel="stylesheet">
-          </head>
-          <body class="index-page">
-          <header id="header" class="header d-flex align-items-center sticky-top">
-            <div class="container d-flex justify-content-between align-items-center">
-              <a href="https://heymitroms.fun/" class="logo"><h1 class="sitename">Hey Mitroms</h1></a>
-              <nav id="navmenu" class="navmenu"><ul><li><a href="../index.html">Home</a></li><li><a href="./index.html" class="active">Jobs</a></li><li><a href="../contact.html">Contact</a></li></ul></nav>
-            </div>
-          </header>
-          <main class="main mt-5"><div class="container py-5"><h1 class="mb-4">🚀 Latest Job Updates</h1><div class="row gy-4">"""
-          html_tail = """</div></div></main>
-          <footer id="footer" class="footer dark-background"><div class="container copyright text-center mt-4"><p>© <strong class="sitename">Hey Mitroms</strong> All Rights Reserved</p></div></footer>
-          <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-          <script src="../assets/js/main.js"></script>
-          </body></html>"""
+          print(f"Successfully wrote {len(jobs)} jobs to jobs/index.json")
+          PYTHON
 
-          cards = ""
-          if not jobs:
-              cards = '<div class="col-12"><p>No jobs available yet.</p></div>'
-          else:
-              for job in jobs:
-                  t = job["title"].replace('"','&quot;')
-                  d = job["description"].replace('"','&quot;')
-                  img_html = f'<img src="{job["image"]}" alt="{t}" style="width:100%;height:200px;object-fit:cover;">' if job["image"] else ""
-                  cards += f'''
-                    <div class="col-md-6">
-                      <div class="card h-100 shadow-sm">
-                        {img_html}
-                        <div class="card-body">
-                          <h4 class="card-title"><a href="{job["link"]}">{t}</a></h4>
-                          <small class="text-muted">{job["date"]}</small>
-                          <p class="mt-2">{d}</p>
-                          <a href="{job["link"]}" class="btn btn-primary btn-sm">Read More</a>
-                        </div>
-                      </div>
-                    </div>
-                  '''
-
-          with open('jobs/index.html', 'w', encoding='utf-8') as out:
-              out.write(html_head + cards + html_tail)
-
-          print(f"Wrote jobs/index.json ({len(jobs)} entries) and jobs/index.html")
-          PY
-
-      - name: Commit & push generated files
+      - name: Commit and push JSON
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add jobs/index.json jobs/index.html || true
-          git commit -m "chore: auto-generate jobs index" || echo "No changes to commit"
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add jobs/index.json
+          git commit -m 'chore: auto-generate jobs index JSON' || echo 'No changes to commit'
           git push origin HEAD:${{ github.ref_name }}
