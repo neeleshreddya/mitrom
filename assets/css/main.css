@@ -2127,3 +2127,30 @@ section,
     margin-top: 20px;
   }
 }
+.swiper-container {
+  width: 100%;
+  height: 300px; /* Slider height */
+}
+
+.swiper-slide {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.post-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
