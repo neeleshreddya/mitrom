@@ -1,4 +1,4 @@
-name: Auto-generate jobs & search index
+name: Auto-generate jobs index with robust parsing  
 
 permissions:
   contents: write
@@ -10,12 +10,7 @@ on:
       - master
     paths:
       - "jobs/**"
-      - "about/**"
-      - "disclaimer/**"
-      - "forms/**"
-      - "privacypolicy/**"
       - ".github/workflows/generate-jobs.yml"
-      - "scripts/generate-search-index.py"
   workflow_dispatch:
 
 jobs:
@@ -37,7 +32,6 @@ jobs:
       - name: Install BeautifulSoup
         run: python -m pip install --upgrade pip beautifulsoup4
 
-      # Generate jobs index (EXISTING)
       - name: Generate jobs/index.json
         run: |
           python - <<'PYTHON'
@@ -127,16 +121,10 @@ jobs:
           print(f"Successfully wrote {len(jobs)} jobs to jobs/index.json")
           PYTHON
 
-      # --- NEW: Generate search-index.json ---
-      - name: Generate search-index.json for instant search
-        run: python scripts/generate-search-index.py
-
-      # --- Commit both indexes ---
-      - name: Commit and push JSON indexes
+      - name: Commit and push JSON
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add jobs/index.json
-          git add search-index.json
-          git commit -m 'chore: auto-generate jobs & search index JSON' || echo 'No changes to commit'
-          git push origin HEAD:${{ github.ref_name }}
+          git commit -m 'chore: auto-generate jobs index JSON' || echo 'No changes to commit'
+          git push
