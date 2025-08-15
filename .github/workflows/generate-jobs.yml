@@ -1,4 +1,4 @@
-name: Auto-generate jobs index with robust parsing  
+name: Auto-generate jobs index with robust parsing
 
 permissions:
   contents: write
