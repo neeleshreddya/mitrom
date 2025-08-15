@@ -1,4 +1,4 @@
-name: Auto-generate jobs index with robust parsing
+name: Auto-generate jobs and blogs index with robust parsing
 
 permissions:
   contents: write
@@ -10,13 +10,13 @@ on:
       - master
     paths:
       - "jobs/**"
-      - ".github/workflows/generate-jobs.yml"
+      - "blogs/**"
+      - ".github/workflows/generate-indexes.yml"
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -32,6 +32,7 @@ jobs:
       - name: Install BeautifulSoup
         run: python -m pip install --upgrade pip beautifulsoup4
 
+      # Generate jobs JSON files
       - name: Generate jobs/index.json
         run: |
           python - <<'PYTHON'
@@ -69,7 +70,6 @@ jobs:
                   print(f"Skipping {filename} due to parse error: {parse_error}")
                   continue
 
-              # Extract title with fallback
               title = ''
               h1 = soup.find('h1')
               h2 = soup.find('h2')
@@ -82,14 +82,11 @@ jobs:
               else:
                   title = os.path.splitext(filename)[0].replace('-', ' ').replace('_', ' ').title()
 
-              # Extract description
               first_p = soup.find('p')
               description = first_p.get_text(" ", strip=True) if first_p else ''
 
-              # Extract date (from git or file)
               date = git_date(filepath)
 
-              # Extract image from meta or first img
               image_url = ''
               meta_img = soup.find('meta', property='og:image')
               if meta_img and meta_img.get('content'):
@@ -112,7 +109,6 @@ jobs:
               jobs.append(job)
               print(f"Processed job: {title}")
 
-          # Sort jobs by date descending, placing undated at the end
           jobs.sort(key=lambda x: x.get('date') or '', reverse=True)
 
           with open('jobs/index.json', 'w', encoding='utf-8') as out_file:
@@ -121,24 +117,17 @@ jobs:
           print(f"Successfully wrote {len(jobs)} jobs to jobs/index.json")
           PYTHON
 
-      - name: Commit and push JSON
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add jobs/index.json
-          git commit -m 'chore: auto-generate jobs index JSON' || echo 'No changes to commit'
-          git push
-
-      - name: Install BeautifulSoup for job list
-        run: python -m pip install --upgrade pip beautifulsoup4
-
-      - name: Generate jobs list JSON
+      - name: Generate jobs-list.json
         run: python scripts/generate-jobs-list.py
 
-      - name: Commit and push jobs-list.json
+      # Generate blogs JSON files
+      - name: Generate blogs-list.json
+        run: python scripts/generate-blogs-list.py
+
+      - name: Commit and push JSON files
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add jobs/jobs-list.json
-          git commit -m 'auto: update jobs-list.json' || echo 'No changes to commit'
+          git add jobs/index.json jobs/jobs-list.json blogs/blogs-list.json
+          git commit -m 'auto: update jobs and blogs JSON' || echo 'No changes to commit'
           git push origin HEAD:${{ github.ref_name }}
