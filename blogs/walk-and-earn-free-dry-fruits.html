@@ -1,95 +1,132 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Discover how you can walk daily, stay fit, and get rewarded with free dry fruits using the Koshiqa app.">
-  <title>Walk 10,000 Steps & Get Free Dry Fruits with Koshiqa</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Earn Free Dry Fruits by Walking - Koshiqaa App Guide</title>
+  <meta name="description" content="Discover how to earn free dry fruits by walking 10,000 steps daily using the Koshiqaa app. Get rewards, stay fit, and enjoy healthy snacks with our complete guide." />
+  <link rel="stylesheet" href="/assets/css/style.css" />
 </head>
 <body>
-<header>
-  <h1>Walk 10,000 Steps & Get Free Dry Fruits with Koshiqa</h1>
-</header>
-<section>
-  <img src="images/koshika.jpg" alt="Koshiqa App" style="max-width:100%;border-radius:10px;margin-bottom:20px;">
-  
-  <!-- Your existing blog content here -->
-  <p>In today’s busy world, ...</p>
-  <!-- rest of your content -->
 
-  <!-- Insert the dynamic blog listing here -->
-  <div id="blogListing" style="margin: 2em 0;">
-    <h2>Our Latest Blogs</h2>
-    <div id="blogsContainer"></div>
-  </div>
+  <!-- HEADER -->
+  <header style="background: #007bff; color: white; padding: 1em; text-align: center;">
+    <h1>Earn Free Dry Fruits by Walking with Koshiqaa</h1>
+    <p>Stay fit, walk daily, and get rewarded with healthy dry fruits!</p>
+  </header>
 
-  <script>
-    fetch('/blogs/blogs-list.json')
-      .then(response => response.json())
-      .then(blogs => {
-        const container = document.getElementById('blogsContainer');
-        if (!container) return;
+  <!-- MAIN CONTENT -->
+  <main style="max-width: 900px; margin: auto; padding: 20px; line-height: 1.6; font-family: Arial, sans-serif;">
+    <img src="/assets/img/koshika.jpg" alt="Koshiqaa App Dry Fruits Reward" style="width: 100%; border-radius: 8px; margin-bottom: 20px;">
 
-        blogs.forEach(blog => {
-          const card = document.createElement('div');
-          card.style.border = '1px solid #e0e0e0';
-          card.style.borderRadius = '8px';
-          card.style.padding = '16px';
-          card.style.marginBottom = '16px';
-          card.style.display = 'flex';
-          card.style.gap = '16px';
+    <h2>Walk Your Way to Free Dry Fruits</h2>
+    <p>In today’s busy lifestyle, staying active is more important than ever. What if you could earn rewards for every step you take? The <strong>Koshiqaa app</strong> has made this possible by combining fitness tracking with exciting real-world rewards like <strong>free dry fruits</strong>!</p>
 
-          const img = document.createElement('img');
-          img.src = blog.image || '/assets/img/default-blog.jpg';
-          img.alt = blog.title;
-          img.style.width = '150px';
-          img.style.height = '100px';
-          img.style.objectFit = 'cover';
-          img.style.borderRadius = '6px';
+    <h3>How Does It Work?</h3>
+    <p>The concept is simple — walk 10,000 steps in a day, and the app rewards you with Koshiqaa Koins. These coins can be redeemed for healthy gifts such as almonds, cashews, walnuts, and other nutritious dry fruits. You also get an <strong>actual medal</strong> for achieving your daily target, making your fitness journey even more exciting.</p>
 
-          const content = document.createElement('div');
+    <h3>How to Get Started</h3>
+    <ol>
+      <li>Download the Koshiqaa app from <a href="https://koshiqa.com/app" target="_blank">this link</a>.</li>
+      <li>Install and open the app on your smartphone.</li>
+      <li>Sign up and use my referral code <strong>a143jr</strong> for a bonus.</li>
+      <li>Connect it with your step tracker (you can use <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness" target="_blank">Google Fit</a> for Android).</li>
+      <li>Start walking and complete 10,000 steps to earn rewards.</li>
+    </ol>
 
-          const titleLink = document.createElement('a');
-          titleLink.href = blog.url;
-          titleLink.textContent = blog.title;
-          titleLink.style.fontSize = '1.25rem';
-          titleLink.style.fontWeight = '700';
-          titleLink.style.color = '#007bff';
-          titleLink.style.textDecoration = 'none';
-          titleLink.onmouseover = () => titleLink.style.textDecoration = 'underline';
-          titleLink.onmouseout = () => titleLink.style.textDecoration = 'none';
-
-          const desc = document.createElement('p');
-          desc.textContent = blog.description || '';
-          desc.style.marginTop = '8px';
-          desc.style.color = '#555';
-
-          content.appendChild(titleLink);
-          content.appendChild(desc);
-
-          card.appendChild(img);
-          card.appendChild(content);
-
-          container.appendChild(card);
-        });
-      })
-      .catch(err => console.error('Failed to load blogs:', err));
-  </script>
-
-</section>
-
-<footer>
-  <div class="col-lg-2 col-md-3 footer-links">
-    <h4>Quick Access</h4>
+    <h3>Why Koshiqaa is Different</h3>
     <ul>
-      <li><a href="https://heymitroms.fun/">Home</a></li>
-      <li><a href="https://heymitroms.fun/latest-jobs/">Latest Jobs</a></li>
-      <li><a href="https://heymitroms.fun/blogs/">Blog</a></li>
-      <li><a href="https://heymitroms.fun/about/">About Us</a></li>
-      <li><a href="https://heymitroms.fun/contact/">Contact</a></li>
+      <li><strong>Real Rewards:</strong> Redeem your coins for actual dry fruits.</li>
+      <li><strong>Fun Challenges:</strong> Compete with friends for medals and coins.</li>
+      <li><strong>Easy Integration:</strong> Syncs with Google Fit for accurate step tracking.</li>
+      <li><strong>Healthy Lifestyle:</strong> Encourages daily walking for better health.</li>
     </ul>
-  </div>
-</footer>
+
+    <h3>Bonus Tips</h3>
+    <p>Make walking a part of your daily routine. Take stairs instead of lifts, go for short evening walks, and track every step. The more you walk, the more coins you earn!</p>
+
+    <p><strong>App Download:</strong> <a href="https://koshiqa.com/app" target="_blank">Koshiqaa Official App Link</a></p>
+    <p><strong>Referral Code:</strong> a143jr</p>
+    <p><strong>Google Fit Link:</strong> <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness" target="_blank">Download Google Fit</a></p>
+
+    <hr style="margin: 40px 0;">
+
+    <!-- BLOG LISTING -->
+    <div id="blogListing" style="margin: 2em 0;">
+      <h2>Our Latest Blogs</h2>
+      <div id="blogsContainer"></div>
+    </div>
+
+    <script>
+      fetch('/blogs/blogs-list.json')
+        .then(response => response.json())
+        .then(blogs => {
+          const container = document.getElementById('blogsContainer');
+          if (!container) return;
+
+          blogs.forEach(blog => {
+            const card = document.createElement('div');
+            card.style.border = '1px solid #e0e0e0';
+            card.style.borderRadius = '8px';
+            card.style.padding = '16px';
+            card.style.marginBottom = '16px';
+            card.style.display = 'flex';
+            card.style.gap = '16px';
+
+            const img = document.createElement('img');
+            img.src = blog.image || '/assets/img/default-blog.jpg';
+            img.alt = blog.title;
+            img.style.width = '150px';
+            img.style.height = '100px';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '6px';
+
+            const content = document.createElement('div');
+
+            const titleLink = document.createElement('a');
+            titleLink.href = blog.url;
+            titleLink.textContent = blog.title;
+            titleLink.style.fontSize = '1.25rem';
+            titleLink.style.fontWeight = '700';
+            titleLink.style.color = '#007bff';
+            titleLink.style.textDecoration = 'none';
+
+            titleLink.onmouseover = () => titleLink.style.textDecoration = 'underline';
+            titleLink.onmouseout = () => titleLink.style.textDecoration = 'none';
+
+            const desc = document.createElement('p');
+            desc.textContent = blog.description || '';
+            desc.style.marginTop = '8px';
+            desc.style.color = '#555';
+
+            content.appendChild(titleLink);
+            content.appendChild(desc);
+
+            card.appendChild(img);
+            card.appendChild(content);
+
+            container.appendChild(card);
+          });
+        })
+        .catch(err => console.error('Failed to load blogs:', err));
+    </script>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="background: #f8f9fa; padding: 20px; margin-top: 40px;">
+    <div class="col-lg-2 col-md-3 footer-links">
+      <h4>Useful Links</h4>
+      <ul style="list-style: none; padding: 0;">
+        <li><a href="https://heymitroms.fun/">Home</a></li>
+        <li><a href="https://heymitroms.fun/about/">About us</a></li>
+        <li><a href="https://heymitroms.fun/disclaimer/">Disclaimer</a></li>
+        <li><a href="https://heymitroms.fun/termsandconditions/">Terms and conditions</a></li>
+        <li><a href="https://heymitroms.fun/privacypolicy/">Privacy policy</a></li>
+      </ul>
+    </div>
+    <p style="margin-top: 20px; color: #777;">&copy; 2025 HeyMitroms. All rights reserved.</p>
+  </footer>
+
 </body>
 </html>
