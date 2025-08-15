@@ -128,3 +128,17 @@ jobs:
           git add jobs/index.json
           git commit -m 'chore: auto-generate jobs index JSON' || echo 'No changes to commit'
           git push
+
+      - name: Install BeautifulSoup for job list
+        run: python -m pip install --upgrade pip beautifulsoup4
+
+      - name: Generate jobs list JSON
+        run: python scripts/generate-jobs-list.py
+
+      - name: Commit and push jobs-list.json
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add jobs/jobs-list.json
+          git commit -m 'auto: update jobs-list.json' || echo 'No changes to commit'
+          git push origin HEAD:${{ github.ref_name }}
