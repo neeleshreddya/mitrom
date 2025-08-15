@@ -1,4 +1,4 @@
-name: Auto-generate jobs & search index 
+name: Auto-generate jobs & search index
 
 permissions:
   contents: write
