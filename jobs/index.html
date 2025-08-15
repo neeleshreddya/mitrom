@@ -9,40 +9,86 @@
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
+  <style>
+    .job-card .card-title a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .job-card .card-title a:hover {
+      text-decoration: underline;
+    }
+    .job-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .job-card .card {
+      transition: box-shadow .2s;
+    }
+    .job-card .card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .main {
+      min-height: 70vh;
+    }
+  </style>
 </head>
 <body class="index-page">
 <header id="header" class="header d-flex align-items-center sticky-top">
   <div class="container d-flex justify-content-between align-items-center">
     <a href="https://heymitroms.fun/" class="logo"><h1 class="sitename">Hey Mitroms</h1></a>
-    <nav id="navmenu" class="navmenu"><ul><li><a href="../index.html">Home</a></li><li><a href="./index.html" class="active">Jobs</a></li><li><a href="../contact.html">Contact</a></li></ul></nav>
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="./index.html" class="active">Jobs</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </nav>
   </div>
 </header>
-<main class="main mt-5"><div class="container py-5"><h1 class="mb-4">🚀 Latest Job Updates</h1><div class="row gy-4">
-          <div class="col-md-6">
-            <div class="card h-100 shadow-sm">
-              <img src="/assets/img/caapgemini.jpg" alt="Hey Mitroms" style="width:100%;height:200px;object-fit:cover;">
-              <div class="card-body">
-                <h4 class="card-title"><a href="/jobs/capgemini-off-campus-drive-2025-2.html">Hey Mitroms</a></h4>
-                <small class="text-muted">2025-08-10</small>
-                <p class="mt-2">Capgemini is a global leader in consulting, technology services, and digital transformation. With over 350,000 employees in more than 50 countries, Capgemini is committed to innovation and helping clients succeed in the digital age.</p>
-                <a href="/jobs/capgemini-off-campus-drive-2025-2.html" class="btn btn-primary btn-sm">Read More</a>
-              </div>
-            </div>
-          </div>
-        
-          <div class="col-md-6">
-            <div class="card h-100 shadow-sm">
-              <img src="/assets/img/WALMART.webp" alt="Hey Mitroms" style="width:100%;height:200px;object-fit:cover;">
-              <div class="card-body">
-                <h4 class="card-title"><a href="/jobs/walmaart-drive-2025.html">Hey Mitroms</a></h4>
-                <small class="text-muted">2025-08-10</small>
-                <p class="mt-2">Walmart is a multinational retail corporation that operates a chain of hypermarkets, discount department stores, and grocery stores worldwide.</p>
-                <a href="/jobs/walmaart-drive-2025.html" class="btn btn-primary btn-sm">Read More</a>
-              </div>
-            </div>
-          </div>
-        </div></div></main>
-<footer id="footer" class="footer dark-background"><div class="container copyright text-center mt-4"><p>© <strong class="sitename">Hey Mitroms</strong> All Rights Reserved</p></div></footer>
+
+<main class="main mt-5">
+  <div class="container py-5">
+    <h1 class="mb-4">🚀 Latest Job Updates</h1>
+    <div class="row gy-4" id="jobs-list">
+      <!-- Jobs rendered by JavaScript -->
+    </div>
+  </div>
+</main>
+
+<footer id="footer" class="footer dark-background">
+  <div class="container copyright text-center mt-4">
+    <p>© <strong class="sitename">Hey Mitroms</strong> All Rights Reserved</p>
+  </div>
+</footer>
 <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/main.js"></script>
-</body></html>
+<script>
+fetch('/jobs/index.json')
+  .then(response => response.json())
+  .then(jobs => {
+    let html = '';
+    jobs.forEach(job => {
+      html += `
+        <div class="col-md-6 job-card">
+          <div class="card h-100 shadow-sm">
+            <img src="${job.image}" alt="${job.title}" />
+            <div class="card-body">
+              <h4 class="card-title"><a href="${job.link}">${job.title}</a></h4>
+              <small class="text-muted">${job.date}</small>
+              <p class="mt-2">${job.description}</p>
+              <a href="${job.link}" class="btn btn-primary btn-sm">Read More</a>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    document.getElementById('jobs-list').innerHTML = html || '<div class="col-12 text-center text-muted">No jobs available right now.</div>';
+  })
+  .catch(() => {
+    document.getElementById('jobs-list').innerHTML =
+      '<div class="col-12 text-center text-danger">Failed to load job listings. Please try again later.</div>';
+  });
+</script>
+</body>
+</html>
