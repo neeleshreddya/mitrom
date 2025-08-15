@@ -2156,13 +2156,11 @@ section,
 
 body {
   font-family: 'Libre Baskerville', serif;
-  background-color: #F4A261; /* Sandy Orange background */
   color: #2F4F4F; /* Dark Slate Gray main text */
 }
 
 .card {
   background: #fff;
-  border-radius: 18px;
   box-shadow: 0 4px 24px rgba(30,144,255,0.08); /* Dodger Blue shadow */
   margin-bottom: 24px;
   color: #4A2C20; /* Dark Brown for card text */
