@@ -94,6 +94,23 @@
       font-weight: 700;
       font-size: 2.25rem;
     }
+    /* Styling for related jobs */
+    #relatedJobs {
+      margin-top: 3rem;
+    }
+    #relatedJobs h3 {
+      font-weight: 600;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    #relatedJobs ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    #relatedJobs li {
+      margin-bottom: 0.6rem;
+    }
   </style>
 </head>
 
@@ -167,6 +184,12 @@
               <h3>Salary & Benefits</h3>
               <p>Competitive salary packages, health benefits, learning opportunities, and global exposure within the fintech industry.</p>
 
+              <!-- Related jobs section -->
+              <div id="relatedJobs">
+                <h3>Related Jobs</h3>
+                <ul id="relatedJobsList"></ul>
+              </div>
+
               <!-- How to Apply Section -->
               <div style="margin-top: 2.5rem;">
                 <div style="background: linear-gradient(90deg, #2bdcff 0, #1fa2ff 100%); color: #fff; font-weight: 700; border-radius: 12px; padding: 12px 24px; font-size: 1.35rem; box-shadow: 0 2px 8px rgba(33, 150, 243, .08); margin-bottom: 1.2rem;">
@@ -229,5 +252,37 @@
   <script src="/assets/vendor/aos/aos.js"></script>
   <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="/assets/js/main.js"></script>
-</body>
+
+  <script>
+    const currentUrl = window.location.pathname;
+
+    fetch('/jobs/jobs-list.json')
+      .then(res => res.json())
+      .then(allJobs => {
+        const filtered = allJobs.filter(job => job.url !== currentUrl);
+        function shuffle(arr) {
+          let a = arr.slice();
+          for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+          }
+          return a;
+        }
+        const randomJobs = shuffle(filtered).slice(0, 3);
+
+        const listEl = document.getElementById('relatedJobsList');
+        randomJobs.forEach(job => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = job.url;
+          a.textContent = job.title;
+          a.style.color = 'blue';
+          a.style.textDecoration = 'underline';
+          li.appendChild(a);
+          listEl.appendChild(li);
+        });
+      })
+      .catch(err => console.error('Failed loading related jobs:', err));
+  </script>
+</body> 
 </html>
