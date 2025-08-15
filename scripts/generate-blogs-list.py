@@ -40,7 +40,7 @@ def main():
     blogs = []
     for blog_file in blog_files:
         if os.path.basename(blog_file).lower() == 'blog.html':
-            continue  # skip the listing page
+            continue  # skip the blog listing page
         blog_info = extract_blog_info(blog_file)
         blogs.append(blog_info)
 
