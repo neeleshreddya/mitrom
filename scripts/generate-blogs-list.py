@@ -39,8 +39,9 @@ def main():
     blog_files = glob.glob(os.path.join(BLOG_FOLDER, '*.html'))
     blogs = []
     for blog_file in blog_files:
-        if os.path.basename(blog_file).lower() == 'blog.html':
-            continue  # skip the blog listing page
+        filename = os.path.basename(blog_file).lower()
+        if filename in ('blog.html', 'index.html'):
+            continue  # Skip blog listing/index files
         blog_info = extract_blog_info(blog_file)
         blogs.append(blog_info)
 
