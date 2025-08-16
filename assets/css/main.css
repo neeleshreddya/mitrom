@@ -2300,5 +2300,26 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
   .post-item img { height: 100px; }
 }
 
+@media (max-width: 900px) {
+  .header > .container {
+    display: block !important;
+    text-align: center;
+  }
+  .header > .container > a.logo {
+    margin-bottom: 15px;
+    display: inline-block;
+  }
+  #navmenu.horizontal-menu ul {
+    flex-direction: column !important;
+    align-items: center;
+    padding-left: 0;
+  }
+  #navmenu.horizontal-menu ul li {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}
+
+
 
 
