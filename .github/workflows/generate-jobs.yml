@@ -1,8 +1,6 @@
 name: Auto-generate jobs and blogs index with robust parsing
-
 permissions:
   contents: write
-
 on:
   push:
     branches:
@@ -13,7 +11,6 @@ on:
       - "blogs/**"
       - ".github/workflows/generate-indexes.yml"
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,16 +20,16 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: true
-
+      
       - name: Setup Python environment
         uses: actions/setup-python@v4
         with:
           python-version: 3.x
-
-      - name: Install BeautifulSoup
+      
+      - name: Install dependencies
         run: python -m pip install --upgrade pip beautifulsoup4
-
-      # Generate jobs JSON files
+      
+      # Generate jobs/index.json
       - name: Generate jobs/index.json
         run: |
           python - <<'PYTHON'
@@ -42,7 +39,6 @@ jobs:
           import subprocess
           import datetime
           from bs4 import BeautifulSoup
-
           def git_date(path):
               try:
                   out = subprocess.check_output(['git', 'log', '-1', '--format=%cs', '--', path])
@@ -55,10 +51,8 @@ jobs:
                   except Exception as ex:
                       print(f"File mtime error for {path}: {ex}")
                       return ''
-
           jobs = []
           job_files = sorted(glob.glob('jobs/*.html'))
-
           for filepath in job_files:
               filename = os.path.basename(filepath)
               if filename.lower() in ('index.html', 'index.json'):
@@ -69,7 +63,6 @@ jobs:
               except Exception as parse_error:
                   print(f"Skipping {filename} due to parse error: {parse_error}")
                   continue
-
               title = ''
               h1 = soup.find('h1')
               h2 = soup.find('h2')
@@ -81,12 +74,9 @@ jobs:
                   title = soup.title.string.strip()
               else:
                   title = os.path.splitext(filename)[0].replace('-', ' ').replace('_', ' ').title()
-
               first_p = soup.find('p')
               description = first_p.get_text(" ", strip=True) if first_p else ''
-
               date = git_date(filepath)
-
               image_url = ''
               meta_img = soup.find('meta', property='og:image')
               if meta_img and meta_img.get('content'):
@@ -95,9 +85,7 @@ jobs:
                   img_tag = soup.find('img')
                   if img_tag and img_tag.get('src'):
                       image_url = img_tag['src']
-
               link = f'/jobs/{filename}'
-
               job = {
                   "title": title,
                   "description": description,
@@ -105,29 +93,64 @@ jobs:
                   "link": link,
                   "image": image_url
               }
-
               jobs.append(job)
               print(f"Processed job: {title}")
-
           jobs.sort(key=lambda x: x.get('date') or '', reverse=True)
-
           with open('jobs/index.json', 'w', encoding='utf-8') as out_file:
               json.dump(jobs, out_file, ensure_ascii=False, indent=2)
-
           print(f"Successfully wrote {len(jobs)} jobs to jobs/index.json")
           PYTHON
-
+      
+      # Generate blogs/index.json
+      - name: Generate blogs/index.json
+        run: python scripts/generate-blogs-index.py
+      
+      # Generate jobs-list.json
       - name: Generate jobs-list.json
         run: python scripts/generate-jobs-list.py
-
-      # Generate blogs JSON files
+      
+      # Generate blogs-list.json
       - name: Generate blogs-list.json
         run: python scripts/generate-blogs-list.py
 
+      # Combine jobs/index.json and blogs/index.json into recent-posts.json
+      - name: Generate combined recent-posts.json
+        run: |
+          python - <<'PYTHON'
+          import json
+          import os
+
+          # Load jobs
+          with open('jobs/index.json', 'r', encoding='utf-8') as f:
+              jobs = json.load(f)
+
+          # Load blogs
+          blogs_path = 'blogs/index.json'
+          if os.path.exists(blogs_path):
+              with open(blogs_path, 'r', encoding='utf-8') as f:
+                  blogs = json.load(f)
+          else:
+              blogs = []
+
+          # Combine and sort
+          combined = jobs + blogs
+          combined.sort(key=lambda x: x.get('date') or '', reverse=True)
+
+          # Slice latest 10 posts (adjust number as needed)
+          recent = combined[:10]
+
+          # Write combined JSON
+          with open('recent-posts.json', 'w', encoding='utf-8') as f:
+              json.dump(recent, f, ensure_ascii=False, indent=2)
+
+          print(f"Generated recent-posts.json with {len(recent)} posts.")
+          PYTHON
+      
+      # Commit and push all JSON files
       - name: Commit and push JSON files
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add jobs/index.json jobs/jobs-list.json blogs/blogs-list.json
-          git commit -m 'auto: update jobs and blogs JSON' || echo 'No changes to commit'
+          git add jobs/index.json jobs/jobs-list.json blogs/index.json blogs/blogs-list.json recent-posts.json
+          git commit -m 'auto: update jobs, blogs, and combined recent posts JSON' || echo 'No changes to commit'
           git push origin HEAD:${{ github.ref_name }}
