@@ -1,134 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>Hey Mitroms</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
-
   <!-- Favicons -->
   <link href="assets/img/hey.png" rel="icon" />
   <link href="assets/img/hey.png" rel="apple-touch-icon" />
-
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet" />
-
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
   <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" rel="stylesheet" />
-
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet" />
-
   <style>
-    /* Styles for the dynamic posts sections */
+    /* ===== Updated Styles ===== */
+    /* Swiper container and slides */
     .swiper-container {
       width: 100%;
-      height: 300px;
+      height: 375px;
       position: relative;
     }
-
+    .swiper-wrapper {
+      align-items: flex-start;
+    }
     .swiper-slide {
       display: flex !important;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
       position: relative;
       border-radius: 8px;
       overflow: hidden;
-      color: white;
+      background: #181818;
     }
-
     .swiper-slide img {
       width: 100%;
       height: 300px;
       object-fit: cover;
       object-position: center;
-      opacity: 0.7;
       display: block;
+      border-radius: 8px 8px 0 0;
     }
-
-    .slide-content {
-      position: absolute;
-      bottom: 15px;
-      left: 15px;
-      right: 15px;
-      color: #fff;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+    /* Caption below image */
+    .slide-caption {
+      margin-top: 12px;
+      padding: 12px;
+      width: 100%;
+      color: #22cc88; /* Your brand color */
+      text-align: center;
+      font-size: 1.05rem;
+      background: none;
+      box-sizing: border-box;
     }
-
-    .slide-content h3 {
-      margin: 0 0 5px;
+    .slide-caption h3 {
+      margin: 0 0 6px 0;
+      font-size: 1.15rem;
+      color: #22cc88;
+      font-weight: 700;
     }
-
+    .slide-caption p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #ccc;
+      font-weight: 400;
+    }
+    /* Random Jobs grid */
     .posts-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
       margin-top: 30px;
     }
-
     .post-item {
-      background: #f9f9f9;
+      background: #222;
       border-radius: 8px;
       overflow: hidden;
-      width: calc(33.333% - 10px);
+      min-width: 220px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       margin-bottom: 15px;
       box-sizing: border-box;
+      color: #fff;
+      text-align: center;
+      flex-shrink: 0;
+      padding: 15px;
     }
-
     .post-item img {
       width: 100%;
       height: 180px;
       object-fit: cover;
       object-position: center;
       display: block;
+      border-radius: 8px 8px 0 0;
     }
-
     .post-item h4 {
       margin: 10px;
       font-size: 1rem;
     }
-
+    /* Trending jobs list */
     #trending-jobs-list {
       list-style: none;
       padding-left: 0;
       margin-top: 30px;
     }
-
     #trending-jobs-list li {
       padding: 6px 0;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #333;
     }
-
     #trending-jobs-list li a {
       text-decoration: none;
-      color: #333;
+      color: #22cc88;
+    }
+    /* Horizontal scrolling menu bar */
+    #navmenu.horizontal-menu {
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      background-color: #222;
+      padding: 10px 0;
+      margin: 0;
+    }
+    #navmenu.horizontal-menu ul {
+      display: flex;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      width: 100%;
+    }
+    #navmenu.horizontal-menu ul li {
+      margin: 0;
+    }
+    #navmenu.horizontal-menu ul li a {
+      display: inline-block;
+      color: #fff;
+      padding: 12px 20px;
+      text-decoration: none;
+      font-weight: 600;
+      user-select: none;
+      white-space: nowrap;
+    }
+    #navmenu.horizontal-menu ul li a:hover,
+    #navmenu.horizontal-menu ul li a.active {
+      background-color: #555;
+    }
+    /* Responsive Adjustments */
+    @media (max-width: 600px) {
+      .swiper-container { height: 295px; }
+      .swiper-slide img { height: 200px; }
+      .slide-caption { padding: 8px; font-size: 0.95rem; }
+      .posts-grid { gap: 8px; }
+      .post-item { min-width: 150px; padding: 8px; }
+      .post-item img { height: 100px; }
     }
   </style>
 </head>
-
 <body class="index-page">
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
       <a href="https://heymitroms.fun/" class="logo d-flex align-items-center me-auto me-xl-0">
         <h1 class="sitename">Hey Mitroms</h1>
       </a>
-      <nav id="navmenu" class="navmenu">
+
+      <!-- Updated Menu Bar for Horizontal Scroll -->
+      <nav id="navmenu" class="horizontal-menu">
         <ul>
           <li><a href="https://heymitroms.fun/" class="active">Home</a></li>
           <li><a href="jobs/">JOBS</a></li>
           <li><a href="blogs/">BLOGS</a></li>
           <li><a href="contact/">Contact</a></li>
         </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
+
       <div class="header-social-links">
         <a href="https://www.facebook.com/heymitroms" class="facebook" target="_blank" rel="noopener"><i class="bi bi-facebook"></i></a>
         <a href="https://www.instagram.com/hey_mitroms/" class="instagram" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
@@ -197,8 +246,7 @@
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -208,7 +256,6 @@
   <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 
@@ -221,33 +268,36 @@
         const shuffledPosts = posts.slice().sort(() => Math.random() - 0.5).slice(0, 6);
         const trendingPosts = posts.slice(0, 5);
 
+        // Latest Job Slider
         const sliderWrapper = document.getElementById('job-slider-wrapper');
         recentPosts.forEach(post => {
           const slide = document.createElement('div');
           slide.className = 'swiper-slide';
           slide.innerHTML = `
             <a href="${post.link}">
-              <img src="${post.image || 'https://via.placeholder.com/600x300'}" alt="${post.title}" style="width:100%;height:300px;object-fit:cover;">
-              <div class="slide-content">
-                <h3>${post.title}</h3>
-                <p>${post.description}</p>
-              </div>
+              <img src="${post.image || 'https://via.placeholder.com/600x300'}" alt="${post.title}" />
             </a>
+            <div class="slide-caption">
+              <h3>${post.title}</h3>
+              <p>${post.description}</p>
+            </div>
           `;
           sliderWrapper.appendChild(slide);
         });
 
+        // Random Job Grid
         const randomList = document.getElementById('random-jobs-list');
         shuffledPosts.forEach(post => {
           const postItem = document.createElement('div');
           postItem.className = 'post-item col-md-4';
           postItem.innerHTML = `
             <a href="${post.link}"><img src="${post.image || 'https://via.placeholder.com/400x200'}" alt="${post.title}"></a>
-            <h4><a href="${post.link}">${post.title}</a></h4>
+            <h4><a href="${post.link}" style="color:#fff;">${post.title}</a></h4>
           `;
           randomList.appendChild(postItem);
         });
 
+        // Trending Jobs List
         const trendingList = document.getElementById('trending-jobs-list');
         trendingPosts.forEach(post => {
           const li = document.createElement('li');
@@ -255,6 +305,7 @@
           trendingList.appendChild(li);
         });
 
+        // Swiper Init
         new Swiper('.swiper-container', {
           loop: true,
           speed: 600,
@@ -265,7 +316,5 @@
       })
       .catch(error => console.error('Error loading jobs index:', error));
   </script>
-
 </body>
-
 </html>
