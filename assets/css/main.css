@@ -2301,25 +2301,28 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
 }
 
 @media (max-width: 900px) {
+  /* Stack logo and nav vertically */
   .header > .container {
-    display: block !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
   }
   .header > .container > a.logo {
     margin-bottom: 15px;
     display: inline-block;
   }
+  #navmenu.horizontal-menu {
+    width: 100% !important;
+  }
   #navmenu.horizontal-menu ul {
     flex-direction: column !important;
     align-items: center;
     padding-left: 0;
+    width: auto;
   }
   #navmenu.horizontal-menu ul li {
     width: 100%;
     margin-bottom: 8px;
   }
 }
-
-
-
-
