@@ -2297,13 +2297,13 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
   align-items: center;
 }
 
-/* Top row: Logo and Social Links */
+/* Top row: Logo and Social Links - SAME ON ALL DEVICES */
 .header-top-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 15px;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin-bottom: 15px !important;
 }
 
 .header > .container > a.logo {
@@ -2312,8 +2312,8 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
 }
 
 .header-social-links {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  align-items: center !important;
 }
 
 /* Menu row: Centered horizontally */
@@ -2323,17 +2323,17 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
 }
 
 #navmenu.horizontal-menu ul {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
   align-items: center;
   padding-left: 0;
   width: auto;
 }
 
 #navmenu.horizontal-menu ul li {
-  width: auto;
-  margin: 0 5px;
+  width: auto !important;
+  margin: 0 5px !important;
 }
 
 /* Responsive */
@@ -2344,21 +2344,23 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
   .posts-grid { gap: 8px; }
   .post-item { min-width: 150px; padding: 8px; }
   .post-item img { height: 100px; }
-}
-
-@media (max-width: 900px) {
+  
+  /* Keep same layout on mobile */
   .header-top-row {
-    flex-direction: column;
-    text-align: center;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-bottom: 12px !important;
   }
   
-  .header > .container > a.logo {
-    margin-bottom: 10px;
+  .header > .container > a.logo h1 {
+    font-size: 1.5rem; /* Smaller logo text on mobile */
   }
   
   .header-social-links {
-    justify-content: center;
-    margin-bottom: 10px;
+    display: flex !important;
+    gap: 8px;
   }
 
   #navmenu.horizontal-menu ul li a {
@@ -2367,3 +2369,18 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
   }
 }
 
+@media (max-width: 900px) {
+  /* Keep horizontal layout even on tablets */
+  .header-top-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-bottom: 12px !important;
+  }
+  
+  #navmenu.horizontal-menu ul li a {
+    padding: 8px 15px;
+    font-size: 0.95rem;
+  }
+}
