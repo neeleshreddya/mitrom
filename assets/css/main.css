@@ -2301,7 +2301,7 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
 }
 
 @media (max-width: 900px) {
-  /* Stack logo and nav vertically */
+  /* Stack logo and nav vertically, but keep menu items horizontal */
   .header > .container {
     display: flex !important;
     flex-direction: column;
@@ -2314,15 +2314,21 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
   }
   #navmenu.horizontal-menu {
     width: 100% !important;
+    justify-content: center;
   }
   #navmenu.horizontal-menu ul {
-    flex-direction: column !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center;
     align-items: center;
     padding-left: 0;
     width: auto;
   }
   #navmenu.horizontal-menu ul li {
-    width: 100%;
-    margin-bottom: 8px;
+    width: auto !important;
+    margin: 0 5px;
+  }
+  #navmenu.horizontal-menu ul li a {
+    padding: 10px 15px;
   }
 }
