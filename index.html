@@ -21,8 +21,40 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet" />
   <style>
-    /* ===== Updated Styles ===== */
-    /* Swiper container and slides */
+    /* Updated Styles */
+    #navmenu.horizontal-menu {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      background-color: #222;
+      padding: 10px 0;
+      margin: 0;
+    }
+    #navmenu.horizontal-menu ul {
+      display: inline-flex;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      width: auto;
+    }
+    #navmenu.horizontal-menu ul li {
+      margin: 0;
+    }
+    #navmenu.horizontal-menu ul li a {
+      display: inline-block;
+      color: #fff;
+      padding: 12px 20px;
+      text-decoration: none;
+      font-weight: 600;
+      user-select: none;
+      white-space: nowrap;
+    }
+    #navmenu.horizontal-menu ul li a:hover,
+    #navmenu.horizontal-menu ul li a.active {
+      background-color: #555;
+    }
+
+    /* Swiper Slider */
     .swiper-container {
       width: 100%;
       height: 375px;
@@ -49,12 +81,11 @@
       display: block;
       border-radius: 8px 8px 0 0;
     }
-    /* Caption below image */
     .slide-caption {
       margin-top: 12px;
       padding: 12px;
       width: 100%;
-      color: #22cc88; /* Your brand color */
+      color: #22cc88;
       text-align: center;
       font-size: 1.05rem;
       background: none;
@@ -72,6 +103,7 @@
       color: #ccc;
       font-weight: 400;
     }
+
     /* Random Jobs grid */
     .posts-grid {
       display: flex;
@@ -104,6 +136,7 @@
       margin: 10px;
       font-size: 1rem;
     }
+
     /* Trending jobs list */
     #trending-jobs-list {
       list-style: none;
@@ -118,39 +151,7 @@
       text-decoration: none;
       color: #22cc88;
     }
-    /* Horizontal scrolling menu bar */
-    #navmenu.horizontal-menu {
-      display: flex;
-      overflow-x: auto;
-      white-space: nowrap;
-      background-color: #222;
-      padding: 10px 0;
-      margin: 0;
-    }
-    #navmenu.horizontal-menu ul {
-      display: flex;
-      padding: 0;
-      margin: 0;
-      list-style: none;
-      width: 100%;
-    }
-    #navmenu.horizontal-menu ul li {
-      margin: 0;
-    }
-    #navmenu.horizontal-menu ul li a {
-      display: inline-block;
-      color: #fff;
-      padding: 12px 20px;
-      text-decoration: none;
-      font-weight: 600;
-      user-select: none;
-      white-space: nowrap;
-    }
-    #navmenu.horizontal-menu ul li a:hover,
-    #navmenu.horizontal-menu ul li a.active {
-      background-color: #555;
-    }
-    /* Responsive Adjustments */
+
     @media (max-width: 600px) {
       .swiper-container { height: 295px; }
       .swiper-slide img { height: 200px; }
@@ -158,6 +159,9 @@
       .posts-grid { gap: 8px; }
       .post-item { min-width: 150px; padding: 8px; }
       .post-item img { height: 100px; }
+      #navmenu.horizontal-menu ul {
+        width: auto;
+      }
     }
   </style>
 </head>
@@ -167,8 +171,9 @@
       <a href="https://heymitroms.fun/" class="logo d-flex align-items-center me-auto me-xl-0">
         <h1 class="sitename">Hey Mitroms</h1>
       </a>
-
-      <!-- Updated Menu Bar for Horizontal Scroll -->
+      <!-- Mobile Nav Toggle Button -->
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      <!-- Navigation Menu -->
       <nav id="navmenu" class="horizontal-menu">
         <ul>
           <li><a href="https://heymitroms.fun/" class="active">Home</a></li>
@@ -177,7 +182,6 @@
           <li><a href="contact/">Contact</a></li>
         </ul>
       </nav>
-
       <div class="header-social-links">
         <a href="https://www.facebook.com/heymitroms" class="facebook" target="_blank" rel="noopener"><i class="bi bi-facebook"></i></a>
         <a href="https://www.instagram.com/hey_mitroms/" class="instagram" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
@@ -185,7 +189,6 @@
       </div>
     </div>
   </header>
-
   <main class="main">
     <!-- Latest Job Posts Slider -->
     <section id="job-slider-section" class="section">
@@ -197,20 +200,17 @@
         <div class="swiper-pagination"></div>
       </div>
     </section>
-
     <!-- Random Job Posts -->
     <section id="random-jobs-section" class="section">
       <h2>Random Job Posts</h2>
       <div id="random-jobs-list" class="posts-grid"></div>
     </section>
-
     <!-- Trending Job Posts -->
     <section id="trending-jobs-section" class="section">
       <h2>Trending Job Posts</h2>
       <ul id="trending-jobs-list"></ul>
     </section>
   </main>
-
   <footer id="footer" class="footer dark-background">
     <div class="container footer-top">
       <div class="row gy-4">
@@ -244,13 +244,10 @@
       </div>
     </div>
   </footer>
-
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
   <!-- Preloader -->
   <div id="preloader"></div>
-
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
@@ -258,7 +255,6 @@
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
-
   <!-- Dynamic Job Posts JavaScript -->
   <script>
     fetch('/jobs/index.json')
@@ -267,7 +263,6 @@
         const recentPosts = posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
         const shuffledPosts = posts.slice().sort(() => Math.random() - 0.5).slice(0, 6);
         const trendingPosts = posts.slice(0, 5);
-
         // Latest Job Slider
         const sliderWrapper = document.getElementById('job-slider-wrapper');
         recentPosts.forEach(post => {
@@ -284,7 +279,6 @@
           `;
           sliderWrapper.appendChild(slide);
         });
-
         // Random Job Grid
         const randomList = document.getElementById('random-jobs-list');
         shuffledPosts.forEach(post => {
@@ -296,7 +290,6 @@
           `;
           randomList.appendChild(postItem);
         });
-
         // Trending Jobs List
         const trendingList = document.getElementById('trending-jobs-list');
         trendingPosts.forEach(post => {
@@ -304,7 +297,6 @@
           li.innerHTML = `<a href="${post.link}">${post.title}</a>`;
           trendingList.appendChild(li);
         });
-
         // Swiper Init
         new Swiper('.swiper-container', {
           loop: true,
