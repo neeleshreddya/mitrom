@@ -2290,6 +2290,52 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
   background-color: #555;
 }
 
+/* Header layout: Logo left, Social links right, Menu below */
+.header > .container {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Top row: Logo and Social Links */
+.header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.header > .container > a.logo {
+  margin: 0;
+  display: inline-block;
+}
+
+.header-social-links {
+  display: flex;
+  align-items: center;
+}
+
+/* Menu row: Centered horizontally */
+#navmenu.horizontal-menu {
+  width: 100%;
+  justify-content: center;
+}
+
+#navmenu.horizontal-menu ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0;
+  width: auto;
+}
+
+#navmenu.horizontal-menu ul li {
+  width: auto;
+  margin: 0 5px;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .swiper-container { height: 295px; }
@@ -2301,34 +2347,23 @@ body, p, h1, h2, h3, h4, h5, h6, a, button, label {
 }
 
 @media (max-width: 900px) {
-  /* Stack logo and nav vertically, but keep menu items horizontal */
-  .header > .container {
-    display: flex !important;
+  .header-top-row {
     flex-direction: column;
-    align-items: center;
     text-align: center;
   }
+  
   .header > .container > a.logo {
-    margin-bottom: 15px;
-    display: inline-block;
+    margin-bottom: 10px;
   }
-  #navmenu.horizontal-menu {
-    width: 100% !important;
+  
+  .header-social-links {
     justify-content: center;
+    margin-bottom: 10px;
   }
-  #navmenu.horizontal-menu ul {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center;
-    align-items: center;
-    padding-left: 0;
-    width: auto;
-  }
-  #navmenu.horizontal-menu ul li {
-    width: auto !important;
-    margin: 0 5px;
-  }
+
   #navmenu.horizontal-menu ul li a {
-    padding: 10px 15px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
   }
 }
+
