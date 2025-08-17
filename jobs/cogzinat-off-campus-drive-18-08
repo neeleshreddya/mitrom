@@ -245,4 +245,4 @@ fetch('/jobs/jobs-list.json')
   .catch(err => console.error('Failed loading related jobs:', err));
 </script>
 </body>
-</html>
+</html> 
