@@ -1,14 +1,14 @@
 [
   {
-    "title": "Eco-Friendly Ganesh Idol Making Kit",
-    "url": "/blogs/eco-friendly-ganesh-idol-making-kit-blog-21082025.html",
-    "description": "Traditional idols are usually made from Plaster of Paris (PoP) and are painted with chemical-based colors. When immersed in water bodies, these materials can pollute rivers and lakes, harm aquatic life, and affect water quality. Eco-friendly idols, made from natural clay or soil and non-toxic colors, dissolve naturally and do not harm the environment.",
-    "image": "/assets/img/ganesh.png"
-  },
-  {
     "title": "Koshiqa Walking Rewards - Hey Mitroms",
     "url": "/blogs/walk-and-earn-free-dry-fruits.html",
     "description": "Koshiqa is a unique fitness rewards app that turns your daily steps into real rewards — like free dry fruits! The concept is simple: walk 10,000 steps, earn Koshiqa Koins, and redeem them for healthy snacks, medals, and more.",
     "image": "/assets/img/koshika.jpg"
+  },
+  {
+    "title": "Eco-Friendly Ganesh Idol Making Kit",
+    "url": "/blogs/eco-friendly-ganesh-idol-making-kit-blog-21082025.html",
+    "description": "Traditional idols are usually made from Plaster of Paris (PoP) and are painted with chemical-based colors. When immersed in water bodies, these materials can pollute rivers and lakes, harm aquatic life, and affect water quality. Eco-friendly idols, made from natural clay or soil and non-toxic colors, dissolve naturally and do not harm the environment.",
+    "image": "/assets/img/ganesh.png"
   }
 ]
